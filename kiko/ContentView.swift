@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var userN:String = ""
+    
     var body: some View {
         NavigationView{
             ZStack{
@@ -27,6 +29,14 @@ struct ContentView: View {
                         .offset(y:-34)
                         .foregroundColor(Color.white)
                         .shadow(radius: 5)
+                VStack {
+                    TextField("skriv ditt namn", text: $userN)
+                        .padding(8)
+                        .background(Color.black.opacity(0.2))
+                        .cornerRadius(10)
+                        .padding(45)
+                        .offset(y:-40)
+                }
             }
         }
     }
