@@ -50,11 +50,17 @@ struct ContentView: View {
 }
 //===============================Second view=======================================
 struct secondVeiw: View{
+    @State var btText:String = "starta"
     @State var inkomst:String = ""
     @Binding var userNa:String
     @State var BtCounter:Int = 0
     @State var startBtPressed: Bool = false
-    @State var mainView = false
+    @State var mainView = true
+    @State var bpOnSpara:Bool = false
+    @State var inkomstView = false
+    @State var inkomstbox:Bool = false
+    @State var procentView:Bool = false
+    @State var sliderValue:Float=0
     
     var body: some View{
         ZStack{
@@ -94,15 +100,36 @@ struct secondVeiw: View{
                     .frame(width: 310)
                     .cornerRadius(20)
                     .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
+                    .animation(.easeInOut)
+                    .keyboardType(.decimalPad)
             }
-            //=========================
-            Button("starta"){
-                BtCounter += 1
+            //=========================Button==========
+            Button(btText){
                 withAnimation(){
+                    BtCounter += 1
                     startBtPressed = true
+                }
+                if BtCounter == 1{
+                    btText = "Spara"
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){
                     mainView = false
+                }
+                // onSpara inkomst
+                if BtCounter == 2 {
+                    withAnimation(){
+                        bpOnSpara = true
+                        btText = "Nästa"
+                    }
+                    inkomstView = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){
+                        inkomstbox = true
+                    }
+                }
+                // onNästa för procent
+                if BtCounter == 3{
+                    btText = "spara"
+                    procentView = true
                 }
             }
             .padding()
@@ -110,6 +137,68 @@ struct secondVeiw: View{
             .foregroundColor(Color.white)
             .cornerRadius(50)
             .offset(x: startBtPressed ? 110:0)
+            .offset(x: bpOnSpara ? -100 : 0, y: bpOnSpara ? 300 : 0)
+            //======================sparade inkomst view========================
+            if inkomstView{
+                RoundedRectangle(cornerRadius: 15)
+                    .frame(height: 280)
+                    .offset(y:-300)
+                    .foregroundColor(Color.blue)
+                    .transition(.asymmetric(insertion: .move(edge: .top), removal: .scale))
+                    .animation(.easeInOut)
+                    .shadow(radius: 10)
+            }
+            if inkomstbox {
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 160, height:130)
+                    .offset(x:-90,y:-260)
+                    .foregroundColor(Color.white)
+                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .scale))
+                    .animation(.easeInOut)
+                Text(" din inkomst ")
+                    .bold()
+                    .padding()
+                    .font(.title2)
+                    .background(Color.black.opacity(0.1))
+                    .cornerRadius(19)
+                    .offset(x:-90,y:-295)
+                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .scale))
+                    .animation(.easeInOut)
+                Text("\(inkomst)kr")
+                    .bold()
+                    .font(.largeTitle)
+                    .offset(x:-90,y:-230)
+                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .scale))
+                    .animation(.easeInOut)
+            }
+            //=============================procent view box==============================
+            if procentView {
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 270, height: 340)
+                    .offset(y:80)
+                    .foregroundColor(Color.blue)
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
+                    .animation(.easeInOut)
+                Text("välj antal skatt procent")
+                    .bold()
+                    .font(.title2)
+                    .foregroundColor(Color.white)
+                    .offset(y:-50)
+                Text(String(format: "%.0f", sliderValue))
+                    .bold()
+                    .padding()
+                    .font(.title2)
+                    .foregroundColor(Color.white)
+                    .background(Color.white.opacity(0.2))
+                    .cornerRadius(50)
+                    .scaleEffect(3)
+                    .offset(y:80)
+                Slider(value: $sliderValue, in: 0...100)
+                    .frame(width:200)
+                    .accentColor(Color.white)
+                    .offset(y:210)
+                
+            }
         }
     }
 }
