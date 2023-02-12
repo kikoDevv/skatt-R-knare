@@ -50,13 +50,14 @@ struct ContentView: View {
 }
 //===============================Second view=======================================
 struct secondVeiw: View{
+    @State var inkomst:String = ""
     @Binding var userNa:String
     @State var BtCounter:Int = 0
     @State var startBtPressed: Bool = false
-    @State var mainView = true
+    @State var mainView = false
     
     var body: some View{
-        ZStack {
+        ZStack{
             if mainView {
                 ZStack{
                     Circle()
@@ -74,31 +75,41 @@ struct secondVeiw: View{
                         .foregroundColor(Color.white)
                     VStack{
                         Text("välkommen")
+                            .scaleEffect(startBtPressed ? 0 : 2)
+                            .offset(y:-70)
+                        Text("\(userNa)")
                             .bold()
-                            .font(.title2)
-                        Text(userNa)
-                            .bold()
+                            .scaleEffect(startBtPressed ? 0 : 1)
                             .font(.largeTitle)
+                            .offset(y:-60)
                     }
                 }
-                .ignoresSafeArea()
+                .ignoresSafeArea(.keyboard)
             }
-            Button("Starta"){
+        //==========inomst textField=
+            if BtCounter == 1{
+                TextField("skriv din inkomst", text: $inkomst)
+                    .padding()
+                    .background(Color.black.opacity(0.3))
+                    .frame(width: 310)
+                    .cornerRadius(20)
+                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
+            }
+            //=========================
+            Button("starta"){
                 BtCounter += 1
-                if BtCounter == 1{
-                    withAnimation(){
-                        startBtPressed = true
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5){
-                        mainView=false
-                    }
+                withAnimation(){
+                    startBtPressed = true
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){
+                    mainView = false
                 }
             }
-            if startBtPressed{
-                ZStack{
-                    
-                }
-            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(Color.white)
+            .cornerRadius(50)
+            .offset(x: startBtPressed ? 110:0)
         }
     }
 }
@@ -130,11 +141,9 @@ struct secondVeiw: View{
 
 
 
-
-
 //=============================================
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        secondVeiw(userNa: .constant("s"))
     }
 }
