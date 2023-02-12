@@ -51,11 +51,16 @@ struct ContentView: View {
 //===============================Second view=======================================
 struct secondVeiw: View{
     @Binding var userNa:String
+    @State var BtCounter:Int = 0
+    @State var startBtPressed: Bool = false
+    
+    
     var body: some View{
         ZStack{
             Circle()
                 .scale(3)
                 .foregroundColor(Color.blue)
+                .ignoresSafeArea()
             Circle()
                 .scale(1.7)
                 .foregroundColor(Color.white.opacity(0.3))
@@ -63,7 +68,7 @@ struct secondVeiw: View{
                 .scale(1.3)
                 .foregroundColor(Color.white.opacity(0.5))
             Circle()
-                .scale(0.9)
+                .scale(startBtPressed ? 3 : 0.9)
                 .foregroundColor(Color.white)
             VStack{
                 Text("välkommen")
@@ -72,7 +77,19 @@ struct secondVeiw: View{
                 Text(userNa)
                     .bold()
                     .font(.largeTitle)
+                Button("Starta"){
+                    BtCounter += 1
+                    if BtCounter == 1{
+                        withAnimation(){
+                            startBtPressed = true
+                        }
+                    }
+                }
             }
+        }
+        .ignoresSafeArea()
+        if startBtPressed{
+            
         }
     }
 }
