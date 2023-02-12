@@ -36,7 +36,7 @@ struct ContentView: View {
                         .cornerRadius(10)
                         .padding(45)
                         .offset(y:-50)
-                    NavigationLink("secondView", destination: secondVeiw(userNa: $userN))
+                    NavigationLink("Spara", destination: secondVeiw(userNa: $userN))
                         .padding()
                         .foregroundColor(Color.white)
                         .background(Color.blue)
@@ -68,7 +68,7 @@ struct secondVeiw: View{
     @State var minusVarde:Int=0
     @State var efterSkattVarde:Int=0
     @State var efterSkattVeiw:Bool=false
-    
+    @Environment(\.presentationMode) var pressentM
     var body: some View{
         ZStack{
             if mainView {
@@ -129,7 +129,7 @@ struct secondVeiw: View{
                         btText = "Nästa"
                     }
                     inkomstView = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6){
                         inkomstbox = true
                     }
                 }
@@ -163,14 +163,18 @@ struct secondVeiw: View{
                     withAnimation {
                         efterSkattVeiw=false
                     }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){
+                        pressentM.wrappedValue.dismiss()
+                    }
                 }
             }
             .padding()
             .background(Color.blue)
             .foregroundColor(Color.white)
             .cornerRadius(50)
-            .offset(x: startBtPressed ? 110:0)
-            .offset(x: bpOnSpara ? -100 : 0, y: bpOnSpara ? 300 : 0)
+            .offset(x: startBtPressed ? 115:0)
+            .offset(x: bpOnSpara ? -105 : 0, y: bpOnSpara ? 270 : 0)
+            .navigationBarHidden(true)
             //======================sparade inkomst view========================
             if inkomstView{
                 RoundedRectangle(cornerRadius: 15)
@@ -197,7 +201,7 @@ struct secondVeiw: View{
                     .offset(x:-90,y:-295)
                     .transition(.asymmetric(insertion: .move(edge: .leading), removal: .scale))
                     .animation(.easeInOut)
-                Text("\(inkomst)kr")
+                Text("\(inkomst) kr")
                     .bold()
                     .font(.largeTitle)
                     .offset(x:-90,y:-230)
@@ -264,8 +268,8 @@ struct secondVeiw: View{
             if efterSkattVeiw{
                 RoundedRectangle(cornerRadius: 20)
                     .frame(width: 270, height: 270)
-                    .offset(y:80)
-                    .foregroundColor(Color.black.opacity(0.1))
+                    .offset(y:40)
+                    .foregroundColor(Color.gray.opacity(0.3))
                     .shadow(radius: 10)
                     .transition(.asymmetric(insertion: .scale, removal: .scale))
                     .animation(.easeInOut)
@@ -322,6 +326,6 @@ struct secondVeiw: View{
 //=============================================
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        secondVeiw(userNa: .constant("s"))
+        ContentView()
     }
 }
