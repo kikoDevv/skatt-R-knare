@@ -46,6 +46,7 @@ struct ContentView: View {
             }
             .ignoresSafeArea(.keyboard)
         }
+        .ignoresSafeArea()
     }
 }
 //===============================Second view=======================================
@@ -148,7 +149,7 @@ struct secondVeiw: View{
                 // on räkna, för att räkna ihop allt och printa ut resultat
                 if BtCounter==5{
                     inkomstInt=Int(inkomst) ?? 0
-                    procent = inkomstInt
+                    procent = Int(sliderValue)
                     minusVarde = inkomstInt*procent/100
                     efterSkattVarde = inkomstInt - minusVarde
                     withAnimation(){
@@ -156,6 +157,12 @@ struct secondVeiw: View{
                         efterSkattVeiw=true
                     }
                     
+                }
+            // on kör om
+                if BtCounter==6{
+                    withAnimation {
+                        efterSkattVeiw=false
+                    }
                 }
             }
             .padding()
@@ -168,7 +175,7 @@ struct secondVeiw: View{
             if inkomstView{
                 RoundedRectangle(cornerRadius: 15)
                     .frame(height: 280)
-                    .offset(y:-300)
+                    .offset(y:-320)
                     .foregroundColor(Color.blue)
                     .transition(.asymmetric(insertion: .move(edge: .top), removal: .scale))
                     .animation(.easeInOut)
@@ -222,9 +229,9 @@ struct secondVeiw: View{
             }
             //=============================procent view box==============================
             if procentView {
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 270, height: 340)
-                    .offset(y:80)
+                RoundedRectangle(cornerRadius: 30)
+                    .frame(width: 270, height: 270)
+                    .offset(y:30)
                     .foregroundColor(Color.blue)
                     .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
                     .animation(.easeInOut)
@@ -232,7 +239,7 @@ struct secondVeiw: View{
                     .bold()
                     .font(.title2)
                     .foregroundColor(Color.white)
-                    .offset(y:-50)
+                    .offset(y:-80)
                     .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
                     .animation(.easeInOut)
                 Text(String(format: "%.0f", sliderValue))
@@ -241,31 +248,34 @@ struct secondVeiw: View{
                     .font(.title2)
                     .foregroundColor(Color.white)
                     .background(Color.white.opacity(0.2))
-                    .cornerRadius(50)
+                    .cornerRadius(100)
                     .scaleEffect(3)
-                    .offset(y:80)
+                    .offset(y:30)
                     .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
                     .animation(.easeInOut)
                 Slider(value: $sliderValue, in: 0...100, step: 1.0)
                     .frame(width:200)
                     .accentColor(Color.white)
-                    .offset(y:210)
+                    .offset(y:130)
                     .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
                     .animation(.easeInOut)
             }
         //============================final view, efter skatt view===============================
             if efterSkattVeiw{
                 RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 270, height: 340)
+                    .frame(width: 270, height: 270)
                     .offset(y:80)
-                    .foregroundColor(Color.blue.opacity(0.5))
-                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
+                    .foregroundColor(Color.black.opacity(0.1))
+                    .shadow(radius: 10)
+                    .transition(.asymmetric(insertion: .scale, removal: .scale))
                     .animation(.easeInOut)
                 Text("Detta är din nettolön")
                     .bold()
                     .font(.title2)
-                    .foregroundColor(Color.white)
-                    .offset(y:-50)
+                    .foregroundColor(Color.black)
+                    .offset(y:-30)
+                    .transition(.asymmetric(insertion: .scale, removal: .scale))
+                    .animation(.easeInOut)
                 Text("\(efterSkattVarde) kr")
                     .bold()
                     .padding()
@@ -274,6 +284,8 @@ struct secondVeiw: View{
                     .cornerRadius(20)
                     .font(.largeTitle)
                     .offset(y:100)
+                    .transition(.asymmetric(insertion: .scale, removal: .scale))
+                    .animation(.easeInOut)
                 
             }
         }
