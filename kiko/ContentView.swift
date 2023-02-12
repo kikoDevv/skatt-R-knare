@@ -61,6 +61,7 @@ struct secondVeiw: View{
     @State var inkomstbox:Bool = false
     @State var procentView:Bool = false
     @State var sliderValue:Float=0
+    @State var procentBox:Bool=false
     
     var body: some View{
         ZStack{
@@ -103,7 +104,7 @@ struct secondVeiw: View{
                     .animation(.easeInOut)
                     .keyboardType(.decimalPad)
             }
-            //=========================Button==========
+            //=========================Button============================================
             Button(btText){
                 withAnimation(){
                     BtCounter += 1
@@ -131,6 +132,14 @@ struct secondVeiw: View{
                     btText = "spara"
                     procentView = true
                 }
+                // on spara Procent
+                if BtCounter==4{
+                    withAnimation(){
+                        btText="räkna"
+                        procentView=false
+                        procentBox=true
+                    }
+                }
             }
             .padding()
             .background(Color.blue)
@@ -148,7 +157,7 @@ struct secondVeiw: View{
                     .animation(.easeInOut)
                     .shadow(radius: 10)
             }
-            if inkomstbox {
+            if inkomstbox{
                 RoundedRectangle(cornerRadius: 20)
                     .frame(width: 160, height:130)
                     .offset(x:-90,y:-260)
@@ -171,6 +180,29 @@ struct secondVeiw: View{
                     .transition(.asymmetric(insertion: .move(edge: .leading), removal: .scale))
                     .animation(.easeInOut)
             }
+            if procentBox{
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 160, height:130)
+                    .offset(x:90,y:-260)
+                    .foregroundColor(Color.white)
+                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .scale))
+                    .animation(.easeInOut)
+                Text(" din inkomst ")
+                    .bold()
+                    .padding()
+                    .font(.title2)
+                    .background(Color.black.opacity(0.1))
+                    .cornerRadius(19)
+                    .offset(x:90,y:-295)
+                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .scale))
+                    .animation(.easeInOut)
+                Text("\(String(format: "%.0f",sliderValue))%")
+                    .bold()
+                    .font(.largeTitle)
+                    .offset(x:90,y:-230)
+                    .transition(.asymmetric(insertion: .move(edge: .leading), removal: .scale))
+                    .animation(.easeInOut)
+            }
             //=============================procent view box==============================
             if procentView {
                 RoundedRectangle(cornerRadius: 20)
@@ -184,6 +216,8 @@ struct secondVeiw: View{
                     .font(.title2)
                     .foregroundColor(Color.white)
                     .offset(y:-50)
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
+                    .animation(.easeInOut)
                 Text(String(format: "%.0f", sliderValue))
                     .bold()
                     .padding()
@@ -193,10 +227,14 @@ struct secondVeiw: View{
                     .cornerRadius(50)
                     .scaleEffect(3)
                     .offset(y:80)
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
+                    .animation(.easeInOut)
                 Slider(value: $sliderValue, in: 0...100)
                     .frame(width:200)
                     .accentColor(Color.white)
                     .offset(y:210)
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
+                    .animation(.easeInOut)
                 
             }
         }
