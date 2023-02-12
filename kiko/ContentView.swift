@@ -35,13 +35,27 @@ struct ContentView: View {
                         .background(Color.black.opacity(0.2))
                         .cornerRadius(10)
                         .padding(45)
-                        .offset(y:-40)
+                        .offset(y:-50)
+                    NavigationLink("secondView", destination: secondVeiw())
+                        .padding()
+                        .foregroundColor(Color.white)
+                        .background(Color.blue)
+                        .cornerRadius(40)
+                        .offset(y:-80)
                 }
             }
+            .ignoresSafeArea(.keyboard)
         }
     }
 }
-
+//===============================Second view=======================================
+struct secondVeiw: View{
+    var body: some View{
+        Text("this is second veiw kiko")
+            .bold()
+            .font(.largeTitle)
+    }
+}
 
 
 
