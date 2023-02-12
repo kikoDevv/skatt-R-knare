@@ -36,7 +36,7 @@ struct ContentView: View {
                         .cornerRadius(10)
                         .padding(45)
                         .offset(y:-50)
-                    NavigationLink("secondView", destination: secondVeiw())
+                    NavigationLink("secondView", destination: secondVeiw(userNa: $userN))
                         .padding()
                         .foregroundColor(Color.white)
                         .background(Color.blue)
@@ -50,10 +50,30 @@ struct ContentView: View {
 }
 //===============================Second view=======================================
 struct secondVeiw: View{
+    @Binding var userNa:String
     var body: some View{
-        Text("this is second veiw kiko")
-            .bold()
-            .font(.largeTitle)
+        ZStack{
+            Circle()
+                .scale(3)
+                .foregroundColor(Color.blue)
+            Circle()
+                .scale(1.7)
+                .foregroundColor(Color.white.opacity(0.3))
+            Circle()
+                .scale(1.3)
+                .foregroundColor(Color.white.opacity(0.5))
+            Circle()
+                .scale(0.9)
+                .foregroundColor(Color.white)
+            VStack{
+                Text("välkommen")
+                    .bold()
+                    .font(.title2)
+                Text(userNa)
+                    .bold()
+                    .font(.largeTitle)
+            }
+        }
     }
 }
 
