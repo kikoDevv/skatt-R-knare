@@ -62,6 +62,11 @@ struct secondVeiw: View{
     @State var procentView:Bool = false
     @State var sliderValue:Float=0
     @State var procentBox:Bool=false
+    @State var procent:Int=0
+    @State var inkomstInt:Int=0
+    @State var minusVarde:Int=0
+    @State var efterSkattVarde:Int=0
+    @State var efterSkattVeiw:Bool=false
     
     var body: some View{
         ZStack{
@@ -139,6 +144,18 @@ struct secondVeiw: View{
                         procentView=false
                         procentBox=true
                     }
+                }
+                // on räkna, för att räkna ihop allt och printa ut resultat
+                if BtCounter==5{
+                    inkomstInt=Int(inkomst) ?? 0
+                    procent = inkomstInt
+                    minusVarde = inkomstInt*procent/100
+                    efterSkattVarde = inkomstInt - minusVarde
+                    withAnimation(){
+                        btText="kör om"
+                        efterSkattVeiw=true
+                    }
+                    
                 }
             }
             .padding()
@@ -229,12 +246,34 @@ struct secondVeiw: View{
                     .offset(y:80)
                     .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
                     .animation(.easeInOut)
-                Slider(value: $sliderValue, in: 0...100)
+                Slider(value: $sliderValue, in: 0...100, step: 1.0)
                     .frame(width:200)
                     .accentColor(Color.white)
                     .offset(y:210)
                     .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
                     .animation(.easeInOut)
+            }
+        //============================final view, efter skatt view===============================
+            if efterSkattVeiw{
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 270, height: 340)
+                    .offset(y:80)
+                    .foregroundColor(Color.blue.opacity(0.5))
+                    .transition(.asymmetric(insertion: .move(edge: .bottom), removal: .scale))
+                    .animation(.easeInOut)
+                Text("Detta är din nettolön")
+                    .bold()
+                    .font(.title2)
+                    .foregroundColor(Color.white)
+                    .offset(y:-50)
+                Text("\(efterSkattVarde) kr")
+                    .bold()
+                    .padding()
+                    .foregroundColor(Color.white)
+                    .background(Color.blue)
+                    .cornerRadius(20)
+                    .font(.largeTitle)
+                    .offset(y:100)
                 
             }
         }
